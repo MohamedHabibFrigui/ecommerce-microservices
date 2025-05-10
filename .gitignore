@@ -1,0 +1,69 @@
+# General development files
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.idea
+.vscode
+*.swp
+*.swo
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
+
+# Dependency directories
+jspm_packages/
+**/jspm_packages/
+
+# gRPC generated files
+**/*_pb.js
+**/*_grpc_pb.js
+
+# Build files
+dist/
+**/dist/
+
+# Coverage reports
+coverage/
+.nyc_output/
+**/coverage/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local development files
+*.local
+*.bak
+*.tmp
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+._*
+
+# Logs
+logs/
+*.log
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Protobuf IDE files
+*.proto~
