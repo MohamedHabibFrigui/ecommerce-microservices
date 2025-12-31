@@ -1,0 +1,96 @@
+services:
+  # MongoDB Database Service
+  mongodb:
+    image: mongo:7
+    container_name: ecommerce-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - ecommerce-network
+
+  # User Service
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    container_name: ecommerce-user-service
+    ports:
+      - "50053:50053"
+    environment:
+      USER_DB_URL: mongodb://mongodb:27017/user
+      USER_SERVICE_PORT: 50053
+    depends_on:
+      - mongodb
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
+  # Product Service
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    container_name: ecommerce-product-service
+    ports:
+      - "50051:50051"
+    environment:
+      PRODUCT_DB_URL: mongodb://mongodb:27017/product
+      PRODUCT_SERVICE_PORT: 50051
+    depends_on:
+      - mongodb
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
+  # Order Service
+  order-service:
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
+    container_name: ecommerce-order-service
+    ports:
+      - "50052:50052"
+    environment:
+      ORDER_DB_URL: mongodb://mongodb:27017/order
+      ORDER_SERVICE_PORT: 50052
+    depends_on:
+      - mongodb
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
+  # API Gateway Service
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: ecommerce-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      JWT_SECRET: sd68fsfscdposcf
+      USER_SERVICE_HOST: user-service
+      USER_SERVICE_PORT: 50053
+      PRODUCT_SERVICE_HOST: product-service
+      PRODUCT_SERVICE_PORT: 50051
+      ORDER_SERVICE_HOST: order-service
+      ORDER_SERVICE_PORT: 50052
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  ecommerce-network:
+    driver: bridge
