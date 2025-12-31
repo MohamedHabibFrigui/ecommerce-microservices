@@ -1,29 +1,34 @@
 pipeline {
     agent any
 
+    triggers {
+            pollSCM('H/5 * * * *')
+        }
+
     stages {
 
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/MohamedHabibFrigui/ecommerce-microservices.git'
+                checkout scm
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    sh 'docker compose build'
-                }
+                sh 'docker compose build'
             }
         }
 
-        stage('Run Application') {
+        stage('Deploy Application') {
             steps {
-                script {
-                    sh 'docker compose up -d'
-                }
+                sh 'docker compose up -d'
             }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker system prune -af || true'
         }
     }
 }
