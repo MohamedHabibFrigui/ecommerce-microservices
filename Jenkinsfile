@@ -3,7 +3,12 @@ pipeline {
 
     triggers {
             pollSCM('H/5 * * * *')
-        }
+    }
+
+    environment {
+        DOCKERHUB_REPO = "mohamedhabibfrigui/ecommerce"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
 
     stages {
 
@@ -28,6 +33,24 @@ pipeline {
                     aquasec/trivy image \
                     ecommerce-microservices-api-gateway:latest \
                     > trivy_report.txt
+                    '''
+                }
+            }
+        }
+
+        stage('Docker Hub Login & Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_PASS'
+                )]) {
+                    sh '''
+                    echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
+
+                    docker tag ecommerce-microservices-api-gateway:latest \
+                        $DOCKERHUB_REPO-api-gateway:$IMAGE_TAG
+                    docker push $DOCKERHUB_REPO-api-gateway:$IMAGE_TAG
                     '''
                 }
             }
