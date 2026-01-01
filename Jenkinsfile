@@ -6,6 +6,7 @@ pipeline {
     }
 
     environment {
+        COMPOSE_PROJECT_NAME = "ecommerce"
         DOCKERHUB_REPO = "mohamedhabibfrigui/ecommerce"
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
