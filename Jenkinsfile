@@ -27,17 +27,16 @@ pipeline {
 
         stage('Trivy Scan') {
             steps {
-                script {
-                    sh '''
-                    docker run --rm \
+                sh '''
+                for img in ecommerce-api-gateway ecommerce-product-service ecommerce-user-service ecommerce-order-service; do
+                docker run --rm \
                     -v /var/run/docker.sock:/var/run/docker.sock \
-                    aquasec/trivy image \
-                    ecommerce-microservices-api-gateway:latest \
-                    > trivy_report.txt
-                    '''
-                }
+                    aquasec/trivy image $img:latest >> trivy_report.txt
+                done
+                '''
             }
         }
+
 
         stage('Docker Hub Login & Push') {
             steps {
@@ -49,9 +48,9 @@ pipeline {
                     sh '''
                     echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
 
-                    docker tag ecommerce-microservices-api-gateway:latest \
-                        $DOCKERHUB_REPO:$IMAGE_TAG
-                    docker push $DOCKERHUB_REPO:$IMAGE_TAG
+                    docker tag ecommerce-api-gateway:latest \
+                        $DOCKERHUB_REPO:api-gatewat-$IMAGE_TAG
+                    docker push $DOCKERHUB_REPO:api-gatewat-$IMAGE_TAG
                     '''
                 }
             }
