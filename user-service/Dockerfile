@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies using shared lockfile
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # Copy only the user service source
 COPY user-service/. .
