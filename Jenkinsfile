@@ -50,7 +50,7 @@ pipeline {
 
                     docker tag ecommerce-api-gateway:latest \
                         $DOCKERHUB_REPO:api-gatewat-$IMAGE_TAG
-                    docker push $DOCKERHUB_REPO:api-gatewat-$IMAGE_TAG
+                    docker push $DOCKERHUB_REPO:api-gateway-$IMAGE_TAG
                     '''
                 }
             }
@@ -58,9 +58,13 @@ pipeline {
 
         stage('Deploy Application') {
             steps {
-                sh 'docker compose up -d'
+                sh '''
+                docker compose down || true
+                docker compose up -d
+                '''
             }
         }
+
     }
 
     post {
