@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-config
+  namespace: ecommerce
+data:
+  MONGO_URI: mongodb://mongodb:27017/ecommerce
+  PRODUCT_SERVICE_URL: product-service:50051
+  USER_SERVICE_URL: user-service:50052
+  ORDER_SERVICE_URL: order-service:50053
