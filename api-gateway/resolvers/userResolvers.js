@@ -1,7 +1,8 @@
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
+const path = require("path");
 
-const protoPath = "user-service/user.proto";
+const protoPath = path.join(__dirname, "user.proto");
 const protoDefinition = protoLoader.loadSync(protoPath, {
   keepCase: true,
   longs: String,

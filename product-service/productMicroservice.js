@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const mongoose = require("mongoose");
@@ -14,7 +15,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Load proto file
-const protoPath = "product-service/product.proto";
+const protoPath = path.join(__dirname, "product.proto");
 const protoDefinition = protoLoader.loadSync(protoPath, {
   keepCase: true,
   longs: String,

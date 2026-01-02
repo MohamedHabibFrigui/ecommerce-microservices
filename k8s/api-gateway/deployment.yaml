@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: mohamedhabibfrigui/ecommerce:api-gateway-13
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: USER_SERVICE_HOST
+              value: "user-service"
+            - name: USER_SERVICE_PORT
+              value: "50053"
+            - name: PRODUCT_SERVICE_HOST
+              value: "product-service"
+            - name: PRODUCT_SERVICE_PORT
+              value: "50051"
+            - name: ORDER_SERVICE_HOST
+              value: "order-service"
+            - name: ORDER_SERVICE_PORT
+              value: "50052"
