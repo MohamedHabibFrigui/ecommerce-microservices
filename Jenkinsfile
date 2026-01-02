@@ -59,7 +59,8 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 sh '''
-                docker compose down || true
+                docker compose down --remove-orphans || true
+                docker rm -f ecommerce-mongodb || true
                 docker compose up -d
                 '''
             }
