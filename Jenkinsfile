@@ -60,7 +60,7 @@ pipeline {
             steps {
                 sh '''
                 docker compose down --remove-orphans || true
-                docker rm -f ecommerce-mongodb || true
+                docker rm -f ecommerce-user-service ecommerce-product-service ecommerce-order-service ecommerce-api-gateway ecommerce-mongodb || true
                 docker compose up -d
                 '''
             }
