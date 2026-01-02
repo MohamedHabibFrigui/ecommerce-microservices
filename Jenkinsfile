@@ -49,7 +49,7 @@ pipeline {
                     echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
 
                     docker tag ecommerce-api-gateway:latest \
-                        $DOCKERHUB_REPO:api-gatewat-$IMAGE_TAG
+                        $DOCKERHUB_REPO:api-gateway-$IMAGE_TAG
                     docker push $DOCKERHUB_REPO:api-gateway-$IMAGE_TAG
                     '''
                 }
